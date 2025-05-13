@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Concorde.AccountPage"
+             BackgroundColor="White">
+
+    <!-- ✅ Master Grid that overlays everything -->
+    <Grid>
+
+        <!-- ✅ Page Layout Grid (content structure) -->
+        <Grid RowDefinitions="Auto,*,Auto" Padding="10">
+
+            <!-- ✅ Body Content -->
+            <ScrollView Grid.Row="1" Padding="0">
+                <VerticalStackLayout Spacing="25" HorizontalOptions="Center">
+
+                    <!-- ✅ Centered Profile Picture and Full Name -->
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,20,0,0">
+
+                        <Grid WidthRequest="100" HeightRequest="100">
+                            <!-- Profile Image -->
+                            <Image
+                                x:Name="ProfileImage"
+                                Source="profile.png"
+                                WidthRequest="100"
+                                HeightRequest="100"
+                                Aspect="AspectFill">
+                                <Image.Clip>
+                                    <EllipseGeometry Center="50,50" RadiusX="50" RadiusY="50" />
+                                </Image.Clip>
+                            </Image>
+
+                            <!-- Camera Icon Button Overlay -->
+                            <Frame
+                                WidthRequest="30"
+                                HeightRequest="30"
+                                CornerRadius="15"
+                                BackgroundColor="#ffffff"
+                                Padding="0"
+                                BorderColor="#cccccc"
+                                HorizontalOptions="End"
+                                VerticalOptions="End"
+                                Margin="0,0,5,5"
+                                HasShadow="True">
+
+                                <Image
+                                    x:Name="CameraIcon"
+                                    Source="camera.png"
+                                    WidthRequest="20"
+                                    HeightRequest="20"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    IsVisible="False">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCameraIconTapped" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Frame>
+                        </Grid>
+
+                        <Label
+                            x:Name="FullNameLabel"
+                            Text="Guest User"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="Black"
+                            HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout BackgroundColor="White" Padding="10" WidthRequest="350">
+                        <!-- Top Grid: My Cart, Wishlist, Notifications -->
+                        <Grid ColumnDefinitions="*,*,*" Padding="10" HorizontalOptions="FillAndExpand">
+                            <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                                <Grid>
+                                    <!-- Cart Image -->
+                                    <Image Source="shop.png" WidthRequest="40" HeightRequest="40">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnCartTapped" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+
+                                    <!-- Cart Badge (Positioned Above Cart Icon) -->
+                                    <Label x:Name="CartBadge"
+                                           Text="0"
+                                           BackgroundColor="Red"
+                                           TextColor="White"
+                                           FontSize="12"
+                                           HeightRequest="18"
+                                           WidthRequest="18"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Start"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"
+                                           IsVisible="False"
+                                           Margin="0,0,12,0" />
+                                </Grid>
+
+                                <Label Text="My Cart" FontSize="14" TextColor="Black" HorizontalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCartTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout HorizontalOptions="FillAndExpand" Grid.Column="1">
+                                <Image Source="product.png" WidthRequest="40" HeightRequest="40" />
+                                <Label Text="Wishlist" FontSize="14" TextColor="Black" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout HorizontalOptions="FillAndExpand" Grid.Column="2">
+                                <Image Source="bell.png" WidthRequest="40" HeightRequest="40" />
+                                <Label Text="Notifications" FontSize="14" TextColor="Black" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <BoxView HeightRequest="40" Color="White" Margin="0,5" />
+
+                        <!-- My Profile -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="10" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="profiles.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="My Profile" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnEditProfileTapped" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+
+                        <!-- My Purchases -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="checklist.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="My Purchases" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnMyPurchasesTapped" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+
+                        <!-- My Location -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="location.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="My Location" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0"  x:Name="MyLocation" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnEditLocationClicked" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <BoxView HeightRequest="1" Color="#e0e0e0" />
+
+                        <!-- Help Centre -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="help.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="Help Centre" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnHelpCentreClicked" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+
+                        <!-- Terms and Conditions -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="terms.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="Terms and Conditions" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+
+                        <!-- FAQs -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="faq.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="FAQ" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+
+                        <!-- Contact Us -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="contact.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="Contact Us" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+
+                        <!-- App Info -->
+                        <Grid ColumnDefinitions="Auto, *, Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Image Grid.Column="0" Source="info.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" Text="App Info" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+
+                        <!-- Login/Logout -->
+                        <Grid ColumnDefinitions="Auto,*,Auto" Padding="5" HorizontalOptions="FillAndExpand">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLoginLogoutButtonClicked" />
+                            </Grid.GestureRecognizers>
+
+                            <Image Grid.Column="0" x:Name="LoginLogoutImage" Source="logout.png" WidthRequest="30" HeightRequest="30" />
+                            <Label Grid.Column="1" x:Name="LoginLogoutLabel" Text="Login" FontSize="14" TextColor="Black" VerticalOptions="Center" Margin="10,0,0,0" />
+                            <Image Grid.Column="2" Source="chevron.png" WidthRequest="16" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="5" Color="White" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- ✅ Loading Overlay Covers Whole Page -->
+        <Grid x:Name="LoadingOverlay"
+              BackgroundColor="#80000000"
+              IsVisible="False"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand"
+              ZIndex="999">
+
+            <ActivityIndicator
+                IsRunning="True"
+                Color="White"
+                WidthRequest="80"
+                HeightRequest="80"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,147 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Concorde"
+             x:Class="Concorde.CartPage"
+             Title="My Cart"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="#f0f0f0">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IsZeroConverter x:Key="IsZeroConverter" />
+            <local:IsNotZeroConverter x:Key="IsNotZeroConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- ✅ Cart Items List -->
+        <CollectionView
+            Grid.Row="1"
+            x:Name="CartCollectionView"
+            ItemsSource="{Binding CartItems}"
+            IsVisible="{Binding CartItems.Count, Converter={StaticResource IsNotZeroConverter}}"
+            Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Reveal">
+                                <SwipeItem
+                                    Text="Delete"
+                                    BackgroundColor="Red"
+                                    IconImageSource="trash.png"
+                                    Invoked="OnRemoveItemSwiped" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Frame Padding="10" Margin="5" CornerRadius="10" BackgroundColor="White" HasShadow="True" x:Name="CartItemFrame">
+                            <Grid ColumnDefinitions="Auto,Auto,*,Auto" VerticalOptions="Center" Padding="10">
+                                <CheckBox Grid.Column="0"
+                                          VerticalOptions="Center"
+                                          IsChecked="{Binding IsSelected}"
+                                          WidthRequest="30"
+                                          HeightRequest="30"
+                                          Color="Black" />
+
+                                <Image Grid.Column="1"
+                                       Source="{Binding ImageUrl}"
+                                       WidthRequest="80"
+                                       HeightRequest="80"
+                                       Aspect="AspectFill"
+                                       Margin="-15,0,0,0" />
+
+                                <VerticalStackLayout Grid.Column="2" Padding="10,0" Spacing="5">
+                                    <Label Text="{Binding Name}" FontSize="14" TextColor="Black" />
+                                    <Label Text="{Binding Price, StringFormat='₱{0:N2}'}" FontSize="14" TextColor="Red" />
+                                </VerticalStackLayout>
+
+                                <!-- Quantity Selector Moved to the Right -->
+                                <HorizontalStackLayout Grid.Column="3" Grid.Row="1" Spacing="2" VerticalOptions="End" HorizontalOptions="End">
+                                    <Button Text="-"
+                                            WidthRequest="20"
+                                            HeightRequest="20"
+                                            MinimumWidthRequest="30"
+                                            MinimumHeightRequest="30"
+                                            BackgroundColor="#ddd"
+                                            TextColor="Black"
+                                            FontSize="14"
+                                            Padding="0"
+                                            Clicked="OnDecreaseQuantityClicked"
+                                            BindingContext="{Binding .}" />
+
+                                    <Label Text="{Binding Quantity}"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"
+                                           FontSize="14"
+                                           TextColor="Black"
+                                           WidthRequest="20"
+                                           HorizontalTextAlignment="Center" />
+
+                                    <Button Text="+"
+                                            WidthRequest="20"
+                                            HeightRequest="20"
+                                            MinimumWidthRequest="30"
+                                            MinimumHeightRequest="30"
+                                            BackgroundColor="#ddd"
+                                            TextColor="Black"
+                                            FontSize="14"
+                                            Padding="0"
+                                            Clicked="OnIncreaseQuantityClicked"
+                                            BindingContext="{Binding .}" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <VerticalStackLayout Grid.Row="1"
+                         IsVisible="{Binding CartItems.Count, Converter={StaticResource IsZeroConverter}}"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center">
+            <Image Source="empty.png"
+               WidthRequest="150"
+               HeightRequest="150"
+               Aspect="AspectFit" />
+            <Label Text="Your cart is empty"
+               FontSize="16"
+               TextColor="Gray"
+               HorizontalOptions="Center" />
+        </VerticalStackLayout>
+        <!-- ✅ Total Price Footer with Checkout Button -->
+        <Grid Grid.Row="2" Padding="10" BackgroundColor="White" HeightRequest="70">
+
+            <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+
+                <!-- Total Price -->
+                <HorizontalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="CenterAndExpand">
+
+                    <Label Text="Total:"
+                   FontSize="16"
+                   VerticalOptions="Center"
+                   TextColor="Black" />
+
+                    <Label Text="{Binding TotalPrice, StringFormat='₱{0:F2}'}"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   TextColor="Red" />
+                </HorizontalStackLayout>
+
+                <!-- Spacer (optional for flexibility) -->
+                <Grid Grid.Column="1" />
+
+                <!-- Checkout Button -->
+                <Button Grid.Column="2"
+                Text="Checkout"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                Padding="20,10"
+                VerticalOptions="Center"
+                HorizontalOptions="End"
+                Clicked="OnCheckoutClicked" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

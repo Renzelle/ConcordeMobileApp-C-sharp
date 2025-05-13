@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Shell.NavBarIsVisible="True"
+             Shell.TabBarIsVisible="False"
+             x:Class="Concorde.ProductBrandPage">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#005acd" Offset="0.0" />
+            <GradientStop Color="#005acd" Offset="0.1" />
+            <GradientStop Color="#005acd" Offset="0.2" />
+            <GradientStop Color="#e0e0e0" Offset="0.6" />
+            <GradientStop Color="#e0e0e0" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ✅ Top Navigation Bar -->
+        <Grid BackgroundColor="Transparent" Padding="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Search Bar with Icon -->
+            <Border Grid.Column="0"
+                HeightRequest="40"
+                WidthRequest="200"
+                StrokeThickness="0"
+                BackgroundColor="White"
+                VerticalOptions="Center"
+                HorizontalOptions="Start">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,20,0,20" />
+                    <!-- top-left, top-right, bottom-right, bottom-left -->
+                </Border.StrokeShape>
+
+                <Grid ColumnSpacing="5" Padding="10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Search Icon -->
+                    <Image Source="search.png"
+                       WidthRequest="20"
+                       HeightRequest="20"
+                       VerticalOptions="Center"
+                       Grid.Column="0" />
+
+                    <!-- Entry -->
+                    <Entry x:Name="SearchEntry"
+                       Grid.Column="1"
+                       Placeholder="Search products..."
+                       BackgroundColor="Transparent"
+                       HeightRequest="40"
+                       VerticalOptions="Center"
+                       FontSize="14"
+                       TextColor="Black"
+                       PlaceholderColor="Gray"
+                       TextChanged="OnSearchTextChanged" />
+                </Grid>
+            </Border>
+
+            <!-- Cart Icon with Badge -->
+            <Grid
+                Grid.Column="1"
+                Padding="0,0,17,0"
+                VerticalOptions="Center">
+                <ImageButton
+                x:Name="CartButton"
+                Source="shopping.png"
+                HeightRequest="30"
+                WidthRequest="30"
+                BackgroundColor="Transparent"
+                Clicked="OnCartButtonClicked" />
+
+                <Label
+                x:Name="CartBadge"
+                Text="0"
+                BackgroundColor="Red"
+                TextColor="White"
+                FontSize="10"
+                HeightRequest="15"
+                WidthRequest="15"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                IsVisible="False"
+                TranslationX="5"
+                TranslationY="-2" />
+            </Grid>
+
+            <ImageButton
+            Grid.Column="2"
+            Source="speech.png"
+            HeightRequest="30"
+            WidthRequest="30"
+            Margin="0,0,20,0"
+            BackgroundColor="Transparent"
+            VerticalOptions="Center" />
+        </Grid>
+
+        <!-- ✅ Product List (Will Scroll) -->
+        <CollectionView ItemsSource="{Binding Products}" Margin="10" Grid.Row="1">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5" CornerRadius="10" HasShadow="True" BackgroundColor="White">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnProductTapped" />
+                        </Frame.GestureRecognizers>
+
+                        <VerticalStackLayout HorizontalOptions="Center">
+
+                            <!-- Product Name -->
+                            <Label Text="{Binding Name}" FontSize="14" TextColor="Black" HorizontalTextAlignment="Start" />
+
+                            <!-- Product Image Slideshow -->
+                            <CarouselView ItemsSource="{Binding ImageUrls}">
+                                <CarouselView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding .}" Aspect="AspectFill" HeightRequest="150" WidthRequest="150" />
+                                    </DataTemplate>
+                                </CarouselView.ItemTemplate>
+                            </CarouselView>
+
+                            <!-- Description -->
+                            <Label Text="{Binding Description}"
+                               FontSize="12"
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Justify"
+                               MaxLines="2"
+                               LineBreakMode="TailTruncation" />
+
+                            <!-- Price -->
+                            <Label Text="{Binding Price, StringFormat='₱{0:N2}'}"
+                               FontSize="18"
+                               TextColor="Red"
+                               HorizontalTextAlignment="Start" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

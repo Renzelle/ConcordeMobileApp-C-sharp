@@ -1,0 +1,34 @@
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Concorde"
+       x:Class="Concorde.AppShell">
+
+    <TabBar Shell.FlyoutBehavior="Disabled">
+        <Tab Title="Home" Icon="home.png">
+            <ShellContent ContentTemplate="{DataTemplate local:HomePage}" Route="HomePage" />
+        </Tab>
+        <Tab Title="Brand" Icon="tag.png">
+            <ShellContent ContentTemplate="{DataTemplate local:BrandPage}" Route="BrandPage" />
+        </Tab>
+        <Tab Title="Products" Icon="box.png">
+            <ShellContent ContentTemplate="{DataTemplate local:ProductsPage}" Route="ProductsPage" />
+        </Tab>
+        <Tab Title="Store" Icon="shopping_bag.png">
+            <ShellContent ContentTemplate="{DataTemplate local:StorePage}" Route="StorePage" />
+        </Tab>
+        <Tab Title="Account" Icon="user.png">
+            <ShellContent ContentTemplate="{DataTemplate local:AccountPage}" Route="AccountPage" />
+        </Tab>
+    </TabBar>
+
+    <!-- ✅ Register ProductBrandPage correctly -->
+    <ShellContent Route="ProductBrandPage" ContentTemplate="{DataTemplate local:ProductBrandPage}" />
+    <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
+    <ShellContent Route="EditProfilePage" ContentTemplate="{DataTemplate local:EditProfilePage}" />
+    <ShellContent Route="EditLocationPage" ContentTemplate="{DataTemplate local:EditLocationPage}" />
+    <ShellContent Route="CheckoutPage" ContentTemplate="{DataTemplate local:CheckoutPage}" />
+    <ShellContent Route="MyPurchasesPage" ContentTemplate="{DataTemplate local:MyPurchasesPage}" />
+    <ShellContent Route="CartPage" ContentTemplate="{DataTemplate local:CartPage}" />
+    <ShellContent Route="HelpCentrePage" ContentTemplate="{DataTemplate local:HelpCentrePage}" />
+    <ShellContent Route="ChatPage" ContentTemplate="{DataTemplate local:ChatPage}" />
+</Shell>

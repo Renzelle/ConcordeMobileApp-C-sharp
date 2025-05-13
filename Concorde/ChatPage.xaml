@@ -1,0 +1,22 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Concorde.ChatPage">
+
+    <VerticalStackLayout Padding="10">
+        <CollectionView ItemsSource="{Binding Messages}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="5" Margin="5"
+                           BackgroundColor="{Binding IsUser, Converter={StaticResource BoolToColorConverter}}">
+                        <Label Text="{Binding Content}" />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <HorizontalStackLayout>
+            <Entry x:Name="UserInput" Placeholder="Type a message..." WidthRequest="300" />
+            <Button Text="Send" Clicked="OnSendClicked" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

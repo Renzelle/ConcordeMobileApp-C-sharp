@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Concorde"
+             x:Class="Concorde.MyPurchasesPage"
+             Title="My Purchases"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="White">
+    <ContentPage.Resources>
+        <Style TargetType="Button" x:Key="TabButtonStyle">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Shadow" Value="{x:Null}" />
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout Padding="0">
+
+            <!-- Tab Navigation -->
+            <ScrollView Orientation="Horizontal" BackgroundColor="White" HeightRequest="70">
+                <HorizontalStackLayout x:Name="TabsLayout" Padding="10" Spacing="20">
+
+                    <!-- To Pay -->
+                    <Button Text="To Pay"
+                            ClassId="ToPay"
+                            Style="{StaticResource TabButtonStyle}"
+                            Clicked="OnTabClicked" />
+                    <!-- To Ship -->
+                    <Button Text="To Ship"
+                            ClassId="ToShip"
+                            Style="{StaticResource TabButtonStyle}"
+                            Clicked="OnTabClicked" />
+                    <!-- To Receive -->
+                    <Button Text="To Receive"
+                            ClassId="ToReceive"
+                            Style="{StaticResource TabButtonStyle}"
+                            Clicked="OnTabClicked" />
+                    <!-- Completed -->
+                    <Button Text="Completed"
+                            ClassId="Completed"
+                            Style="{StaticResource TabButtonStyle}"
+                            Clicked="OnTabClicked" />
+                    <!-- Return / Refund -->
+                    <Button Text="ReturnRefund"
+                            ClassId="ReturnRefund"
+                            Style="{StaticResource TabButtonStyle}"
+                            Clicked="OnTabClicked" />
+                    <!-- Cancelled -->
+                    <Button Text="Cancelled"
+                            ClassId="Cancelled"
+                            Style="{StaticResource TabButtonStyle}"
+                            Clicked="OnTabClicked" />
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- Orders List -->
+            <VerticalStackLayout x:Name="OrdersStackLayout" Spacing="10" Padding="10">
+                <Image x:Name="EmptyOrdersImage"
+                       Source="empty.png"
+                       WidthRequest="200"
+                       HeightRequest="200"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="False" />
+                <Label x:Name="EmptyOrdersLabel"
+                       Text="No orders found."
+                       FontSize="16"
+                       TextColor="Gray"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="False" />
+
+                <CollectionView x:Name="OrdersCollectionView"
+                                ItemsLayout="VerticalList"
+                                VerticalOptions="Start">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="#ccc" CornerRadius="10" Padding="10" BackgroundColor="White">
+                                <Grid RowDefinitions="Auto,Auto,Auto">
+
+                                    <!-- Order Info -->
+                                    <VerticalStackLayout Grid.Row="0" Spacing="2">
+                                        <Label Text="{Binding OrderId, StringFormat='Order ID: {0}'}" FontSize="14" TextColor="Black" />
+                                        <Label Text="{Binding status}" FontSize="12" TextColor="Gray" />
+                                        <Label FontSize="16">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding StatusIcon}" FontSize="18" />
+                                                    <Span Text="  " />
+                                                    <!-- Space -->
+                                                    <Span Text="{Binding Status}" FontSize="16" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+
+                                    <!-- Items -->
+                                    <VerticalStackLayout Grid.Row="1" Spacing="10" Margin="0,10,0,10">
+                                        <CollectionView ItemsSource="{Binding Items}"
+                                                        ItemsLayout="VerticalList"
+                                                        VerticalOptions="Start">
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <HorizontalStackLayout Spacing="10">
+                                                        <Image
+                                                            Source="{Binding FirstImage}"
+                                                            WidthRequest="100"
+                                                            HeightRequest="100"
+                                                            Aspect="AspectFill" />
+
+                                                        <VerticalStackLayout>
+                                                            <Label Text="{Binding product_name, StringFormat='Model: {0}'}" TextColor="Black" />
+                                                            <Label Text="{Binding price, StringFormat='₱{0}'}" FontSize="12" TextColor="Red" />
+                                                            <Label Text="{Binding quantity, StringFormat='Qty: {0}'}" FontSize="12" TextColor="Gray" />
+                                                        </VerticalStackLayout>
+                                                    </HorizontalStackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </VerticalStackLayout>
+
+                                    <!-- Total Price Bottom Right + Buy Again Button -->
+                                    <Grid Grid.Row="2" Padding="0,10,0,0">
+                                        <VerticalStackLayout HorizontalOptions="End" Spacing="10">
+
+                                            <Label Text="{Binding TotalAmount, StringFormat='Total: ₱{0:N2}'}"
+                                                   FontSize="14"
+                                                   TextColor="Red"
+                                                   HorizontalOptions="End" />
+                                            <!-- Complete Button -->
+                                            <Button Text="Complete"
+                                                    FontSize="14"
+                                                    BackgroundColor="green"
+                                                    TextColor="White"
+                                                    CornerRadius="5"
+                                                    Padding="10,5"
+                                                    Clicked="OnCompleteOrderClicked"
+                                                    IsVisible="False">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="ToReceive">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                            <!-- Cancelled Button -->
+                                            <Button Text="Cancel Order"
+                                                    FontSize="14"
+                                                    BackgroundColor="#ff7c00"
+                                                    TextColor="White"
+                                                    CornerRadius="5"
+                                                    Padding="10,5"
+                                                    Clicked="OnCancelOrderClicked"
+                                                    IsVisible="False">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding Status}"
+                                                                 Value="Pending">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+
+                                            <!-- Buy Again Button -->
+                                            <Button Text="Buy Again"
+                                                    FontSize="14"
+                                                    BackgroundColor="blue"
+                                                    TextColor="White"
+                                                    CornerRadius="5"
+                                                    Padding="10,5"
+                                                    IsVisible="False"
+                                                    Clicked="OnBuyAgainClicked">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                    Binding="{Binding Status}"
+                                                                    Value="Completed">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger TargetType="Button"
+                                                                    Binding="{Binding CanBuyAgain}"
+                                                                    Value="False">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                        <Setter Property="BackgroundColor" Value="Gray" />
+                                                        <Setter Property="Text" Value="Out of Stock" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

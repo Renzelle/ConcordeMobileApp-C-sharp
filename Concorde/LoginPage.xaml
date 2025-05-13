@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Concorde.LoginPage"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="White">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="30" Spacing="30" VerticalOptions="Center">
+
+                <!-- ✅ Logo -->
+                <Image Source="logo.png"
+                WidthRequest="300"
+                   HeightRequest="150"
+                   HorizontalOptions="Center" />
+
+                <!-- ✅ Username Field with Icon -->
+                <Grid HeightRequest="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon -->
+                    <Image Source="user1.png"
+                       WidthRequest="24"
+                       HeightRequest="24"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       Margin="5" />
+
+                    <!-- Entry -->
+                    <Entry x:Name="UsernameEntry"
+                       Grid.Column="1"
+                       Placeholder="Username"
+                       BackgroundColor="Transparent"
+                       TextColor="Black"
+                       PlaceholderColor="Gray"
+                       FontSize="16"
+                       HeightRequest="50"
+                       Completed="OnEntryCompleted" />
+
+                    <!-- Bottom line -->
+                    <BoxView Grid.ColumnSpan="2"
+                         Color="Gray"
+                         HeightRequest="1"
+                         VerticalOptions="End" />
+                </Grid>
+
+                <!-- ✅ Password Field with Icon & Show Password -->
+                <Grid HeightRequest="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <!-- For the eye icon -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon -->
+                    <Image Source="padlock.png"
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Margin="5" />
+
+                    <!-- Entry -->
+                    <Entry x:Name="PasswordEntry"
+                        Grid.Column="1"
+                        Placeholder="Password"
+                        IsPassword="True"
+                        BackgroundColor="Transparent"
+                        TextColor="Black"
+                        PlaceholderColor="Gray"
+                        FontSize="16"
+                        HeightRequest="50"
+                        Completed="OnEntryCompleted" />
+
+                    <!-- Show/Hide Password Button -->
+                    <ImageButton
+                        x:Name="ShowPasswordButton"
+                        Source="hide.png"
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        BackgroundColor="Transparent"
+                        Grid.Column="2"
+                        Clicked="OnShowPasswordClicked"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Margin="5" />
+
+                    <!-- Bottom line -->
+                    <BoxView Grid.ColumnSpan="3"
+                            Color="Gray"
+                            HeightRequest="1"
+                            VerticalOptions="End" />
+                </Grid>
+
+                <!-- ✅ Login Button -->
+                <Button Text="Login"
+                    BackgroundColor="#005acd"
+                    TextColor="White"
+                    FontSize="16"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    Clicked="OnLoginButtonClicked" />
+
+                <!-- ✅ Sign Up Label -->
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Don't have an account?"
+                       FontSize="14"
+                       TextColor="Gray" />
+
+                    <Label Text=" Sign up"
+                       FontSize="14"
+                       TextColor="#005acd"
+                       FontAttributes="Bold">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnSignUpTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+        <!-- Loader overlay -->
+        <Grid x:Name="LoadingOverlay"
+              BackgroundColor="#80000000"
+            IsVisible="False"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand">
+            <ActivityIndicator x:Name="LoadingIndicator"
+                IsRunning="True"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Color="White"
+                WidthRequest="80"
+                HeightRequest="80" />
+        </Grid>
+    </Grid>
+</ContentPage>

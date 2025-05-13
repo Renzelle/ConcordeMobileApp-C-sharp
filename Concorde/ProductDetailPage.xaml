@@ -1,0 +1,142 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Concorde.ProductDetailPage"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="#dfdfdf">
+
+    <Grid>
+
+        <!-- Main Content -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="20">
+                <Grid Padding="0">
+                    <CarouselView x:Name="ProductCarousel"
+                                  ItemsSource="{Binding ImageUrls}"
+                                  HeightRequest="350"
+                                  ItemsLayout="HorizontalList"
+                                  HorizontalScrollBarVisibility="Never"
+                                  IndicatorView="carouselIndicators"
+                                  Loop="True">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding .}"
+                                       Aspect="AspectFill"
+                                       WidthRequest="450"
+                                       HeightRequest="350" />
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+
+                    <!-- Optional: Page indicators -->
+                    <IndicatorView x:Name="carouselIndicators"
+                                   IndicatorColor="#ccc"
+                                   SelectedIndicatorColor="#3dbd66"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="End"
+                                   Margin="0,0,0,10" />
+                </Grid>
+
+                <VerticalStackLayout Padding="10" Spacing="20">
+                    <Label Text="{Binding Name}" FontSize="18" TextColor="Black" FontAttributes="Bold" />
+                    <Label Text="{Binding Description}" FontSize="14" TextColor="Black" HorizontalTextAlignment="Justify" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Fixed Footer -->
+        <Grid RowDefinitions="Auto" BackgroundColor="White" Padding="10" VerticalOptions="End" HeightRequest="70">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Text="{Binding Price, StringFormat='₱{0:N2}'}"
+           FontSize="22"
+           TextColor="Black"
+           VerticalOptions="Center" />
+
+            <!-- Wishlist Button with Gap -->
+            <HorizontalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center" Margin="0,0,10,0">
+                <ImageButton Source="wishlist.png"
+                    HeightRequest="30"
+                    WidthRequest="30"
+                    MinimumHeightRequest="10"
+                    MinimumWidthRequest="10"
+                    Aspect="AspectFit"
+                    BackgroundColor="Transparent"
+                    Clicked="OnWishlistClicked" />
+            </HorizontalStackLayout>
+
+            <Button x:Name="AddToCartButton"
+            Grid.Column="2"
+            Text="Add to Cart"
+            BackgroundColor="#3dbd66"
+            TextColor="White"
+            Clicked="OnAddToCartClicked"
+            CornerRadius="20"
+            WidthRequest="150"
+            HeightRequest="50"
+            VerticalOptions="Center" />
+        </Grid>
+
+        <!-- ✅ Loading Overlay -->
+        <Grid x:Name="LoadingOverlay"
+              IsVisible="False"
+              BackgroundColor="#80000000"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
+
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="True" Color="White" WidthRequest="100" HeightRequest="100" />
+                <Label Text="Loading..." TextColor="White" HorizontalOptions="Center" Margin="0,10,0,0" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- ✅ Modal Overlay -->
+        <Grid x:Name="CartModal"
+              IsVisible="False"
+              BackgroundColor="#80000000"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
+
+            <Grid VerticalOptions="End" BackgroundColor="White" Padding="20" HeightRequest="300">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Product Info -->
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Image x:Name="CartModalImage" WidthRequest="100" HeightRequest="100" Aspect="AspectFill" />
+                    <VerticalStackLayout>
+                        <Label Text="{Binding Name}" FontSize="16" TextColor="Black" />
+                        <Label Text="{Binding Price, StringFormat='₱{0:N2}'}" FontSize="16" TextColor="Red" />
+                        <Label Text="{Binding Stock, StringFormat='Available Stock: {0}'}" FontSize="14" TextColor="Gray" />
+                    </VerticalStackLayout>
+                </StackLayout>
+
+                <!-- Quantity Selector -->
+                <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="15" VerticalOptions="Center" HorizontalOptions="Center">
+
+                    <Label Text="Quantity:" VerticalOptions="Center" FontSize="16" TextColor="Black" />
+
+                    <Button x:Name="DecreaseButton" Text="-" WidthRequest="40" HeightRequest="40" CornerRadius="20"
+                            BackgroundColor="#cccccc" TextColor="Black" FontSize="18" Clicked="OnDecreaseQuantityClicked" />
+
+                    <Label x:Name="QuantityLabel" Text="1" WidthRequest="50" HeightRequest="40"
+                           FontSize="16" BackgroundColor="White" TextColor="Black"
+                           VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+
+                    <Button x:Name="IncreaseButton" Text="+" WidthRequest="40" HeightRequest="40" CornerRadius="20"
+                            BackgroundColor="#cccccc" TextColor="Black" FontSize="18" Clicked="OnIncreaseQuantityClicked" />
+                </StackLayout>
+
+                <!-- Confirm Add to Cart -->
+                <Button Grid.Row="2" Text="Confirm Add to Cart" BackgroundColor="#3dbd66" TextColor="White"
+                        CornerRadius="20" HeightRequest="50" Clicked="OnConfirmAddToCartClicked" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

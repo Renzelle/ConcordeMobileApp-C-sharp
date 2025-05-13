@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Concorde.StorePage">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#005acd" Offset="0.0" />
+            <GradientStop Color="#005acd" Offset="0.1" />
+            <GradientStop Color="#005acd" Offset="0.2" />
+            <GradientStop Color="#e0e0e0" Offset="0.6" />
+            <GradientStop Color="#e0e0e0" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ✅ Top Navigation Bar -->
+        <Grid BackgroundColor="Transparent" Padding="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Search Bar with Icon -->
+            <Border Grid.Column="0"
+                    HeightRequest="40"
+                    WidthRequest="200"
+                    StrokeThickness="0"
+                    BackgroundColor="White"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,20,0,20" />
+                    <!-- top-left, top-right, bottom-right, bottom-left -->
+                </Border.StrokeShape>
+
+                <Grid ColumnSpacing="5" Padding="10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Search Icon -->
+                    <Image Source="search.png"
+                           WidthRequest="20"
+                           HeightRequest="20"
+                           VerticalOptions="Center"
+                           Grid.Column="0" />
+
+                    <!-- Entry -->
+                    <Entry x:Name="SearchEntry"
+                           Grid.Column="1"
+                           Placeholder="Search brands..."
+                           BackgroundColor="Transparent"
+                           HeightRequest="40"
+                           VerticalOptions="Center"
+                           FontSize="14"
+                           TextColor="Black"
+                           PlaceholderColor="Gray"
+                           TextChanged="OnSearchTextChanged" />
+                </Grid>
+            </Border>
+
+            <!-- ✅ Cart Icon with Badge -->
+            <Grid
+                Grid.Column="1"
+                Padding="0,0,17,0"
+                VerticalOptions="Center">
+                <ImageButton
+                    x:Name="CartButton"
+                    Source="shopping.png"
+                    HeightRequest="30"
+                    WidthRequest="30"
+                    BackgroundColor="Transparent"
+                    Clicked="OnCartButtonClicked" />
+
+                <Label
+                    x:Name="CartBadge"
+                    Text="0"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    FontSize="10"
+                    HeightRequest="15"
+                    WidthRequest="15"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    IsVisible="False"
+                    TranslationX="5"
+                    TranslationY="-2" />
+            </Grid>
+
+            <ImageButton
+                Grid.Column="2"
+                Source="speech.png"
+                HeightRequest="30"
+                WidthRequest="30"
+                Margin="0,0,20,0"
+                BackgroundColor="Transparent"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!-- ✅ Branch List (Will Scroll) -->
+        <CollectionView ItemsSource="{Binding Branches}" Margin="10" Grid.Row="1">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5" CornerRadius="10" HasShadow="True" BackgroundColor="White">
+                        <VerticalStackLayout HorizontalOptions="Center">
+
+                            <Label Text="{Binding Name}"
+                                   FontSize="20"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center" />
+
+                            <Image WidthRequest="150"
+                                HeightRequest="150"
+                                Aspect="AspectFill">
+                                <Image.Source>
+                                    <UriImageSource Uri="{Binding ImageUrl}" />
+                                </Image.Source>
+                            </Image>
+
+                            <Label Text="{Binding Location}"
+                                   FontSize="16"
+                                   TextColor="Blue"
+                                   HorizontalTextAlignment="Center"
+                                   TextDecorations="Underline">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenMapCommand}" CommandParameter="{Binding Location}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+                            <Label Text="{Binding Contact}"
+                                   FontSize="14"
+                                   TextColor="Blue"
+                                   HorizontalTextAlignment="Center"
+                                   TextDecorations="Underline">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenContactCommand}" CommandParameter="{Binding Contact}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

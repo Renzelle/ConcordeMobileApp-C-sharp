@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="#f0f0f0"
+             x:Class="Concorde.CheckoutPage"
+             Title="Checkout">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- ✅ Main Scrollable Content -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="10" Spacing="10">
+                <CollectionView x:Name="ItemsListView"
+                        ItemsSource="{Binding CheckoutItems}"
+                        Margin="0"
+                        SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10" ColumnDefinitions="80, *, Auto" RowDefinitions="Auto">
+                                <Image Source="{Binding ImageUrl}" WidthRequest="60" HeightRequest="60" Aspect="AspectFill" />
+                                <VerticalStackLayout Grid.Column="1" Padding="10,0">
+                                    <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="Black" FontSize="14" />
+                                    <Label Text="{Binding Price, StringFormat='₱{0:F2}'}" TextColor="Red" FontSize="13" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="2" Text="{Binding Quantity, StringFormat='Qty: {0}'}" VerticalOptions="Center" FontSize="13" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <!-- ✅ Shipping Details -->
+                <Frame BorderColor="#D3D3D3" CornerRadius="8" Padding="10">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout>
+                            <Label Text="Delivery Address" FontAttributes="Bold" TextColor="Black" FontSize="14" />
+                            <Label Text="{Binding UserName}" TextColor="Black" FontSize="13" />
+                            <Label Text="{Binding DeliveryAddress}" TextColor="Black" FontSize="13" />
+                        </VerticalStackLayout>
+
+                        <!-- ✅ Edit Button -->
+                        <Button Grid.Column="1"
+                                Text="Edit"
+                                BackgroundColor="#e0e0e0"
+                                TextColor="Black"
+                                FontSize="12"
+                                HeightRequest="30"
+                                WidthRequest="60"
+                                CornerRadius="15"
+                                Clicked="OnEditAddressClicked" />
+                    </Grid>
+                </Frame>
+
+                <!-- ✅ Payment Method Section -->
+                <Frame BorderColor="#D3D3D3" CornerRadius="8" Padding="10">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Payment Method" FontAttributes="Bold" TextColor="Black" FontSize="14" />
+                        <Button Grid.Column="1"
+                                Text="{Binding PaymentMethod, FallbackValue='Select'}"
+                                BackgroundColor="#e0e0e0"
+                                TextColor="Black"
+                                FontSize="12"
+                                HeightRequest="30"
+                                CornerRadius="15"
+                                Clicked="OnSelectPaymentMethodClicked" />
+                    </Grid>
+                </Frame>
+
+                <!-- ✅ Shipping Method Section -->
+                <Frame BorderColor="#D3D3D3" CornerRadius="8" Padding="10">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Shipping Option" FontAttributes="Bold" TextColor="Black" FontSize="14" />
+                        <Button Grid.Column="1"
+                                Text="{Binding SelectedShippingMethod, FallbackValue='Select'}"
+                                BackgroundColor="#e0e0e0"
+                                TextColor="Black"
+                                FontSize="12"
+                                HeightRequest="30"
+                                CornerRadius="15"
+                                Clicked="OnSelectShippingMethodClicked" />
+                    </Grid>
+                </Frame>
+
+                <!-- ✅ Notes to Seller -->
+                <Frame BorderColor="#D3D3D3" CornerRadius="8" Padding="10">
+                    <VerticalStackLayout>
+                        <Label Text="Notes to Seller (optional)" FontAttributes="Bold" TextColor="Black" FontSize="14" />
+                        <Editor Placeholder="Type your note here..."
+                                HeightRequest="60"
+                                Text="{Binding OrderNotes}" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- ✅ Voucher Code -->
+                <Frame BorderColor="#D3D3D3" CornerRadius="8" Padding="10">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry Placeholder="Enter voucher code"
+                               Text="{Binding VoucherCode}"
+                               FontSize="13" />
+                        <Button Grid.Column="1"
+                                Text="Apply"
+                                BackgroundColor="#007AFF"
+                                TextColor="White"
+                                FontSize="12"
+                                HeightRequest="30"
+                                WidthRequest="70"
+                                CornerRadius="15"
+                                Clicked="OnApplyVoucherClicked" />
+                    </Grid>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- ✅ Price Summary Footer with Place Order Button -->
+        <VerticalStackLayout Grid.Row="1"
+                             Padding="10"
+                             BackgroundColor="White"
+                             Spacing="5">
+
+            <!-- Subtotal -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Subtotal" TextColor="Black" FontSize="13" />
+                <Label Text="{Binding Subtotal, StringFormat='₱{0:F2}'}"
+                       TextColor="Black"
+                       FontSize="13"
+                       HorizontalOptions="End"
+                       HorizontalTextAlignment="End" />
+            </Grid>
+
+            <!-- Shipping Fee -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Shipping Fee" TextColor="Black" FontSize="13" />
+                <Label Text="{Binding ShippingFee, StringFormat='₱{0:F2}'}"
+                       TextColor="Black"
+                       FontSize="13"
+                       HorizontalOptions="End"
+                       HorizontalTextAlignment="End" />
+            </Grid>
+
+            <!-- Discount -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Discount" TextColor="Black" FontSize="13" />
+                <Label Text="{Binding Discount, StringFormat='₱{0:F2}'}"
+                       TextColor="Green"
+                       FontSize="13"
+                       HorizontalOptions="End"
+                       HorizontalTextAlignment="End" />
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="LightGray" Margin="0,5" />
+
+            <!-- ✅ Total Price + Button -->
+            <Grid ColumnDefinitions="*,Auto"
+                  VerticalOptions="Center"
+                  HorizontalOptions="FillAndExpand">
+
+                <!-- Total Label -->
+                <VerticalStackLayout>
+                    <Label Text="Total Payment" FontSize="14" TextColor="Black" />
+                    <Label Text="{Binding TotalPrice, StringFormat='₱{0:F2}'}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="Red" />
+                </VerticalStackLayout>
+
+                <!-- Place Order Button -->
+                <Button Grid.Column="1"
+                        Text="Place Order"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="10"
+                        Padding="20,10"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        Clicked="OnPlaceOrderClicked" />
+            </Grid>
+        </VerticalStackLayout>
+        <!-- ✅ Loading Indicator Overlay -->
+        <Grid x:Name="LoadingOverlay"
+              BackgroundColor="#80000000"
+              IsVisible="False"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand"
+              RowSpan="2">
+
+            <ActivityIndicator IsRunning="True"
+                               Color="White"
+                               WidthRequest="60"
+                               HeightRequest="60"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+
+            <Label Text="Processing..."
+                   TextColor="White"
+                   FontAttributes="Bold"
+                   FontSize="14"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,80,0,0" />
+        </Grid>
+    </Grid>
+</ContentPage>

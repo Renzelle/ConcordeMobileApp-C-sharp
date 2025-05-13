@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Concorde.EditLocationPage"
+             BackgroundColor="White"
+             Shell.TabBarIsVisible="False"
+             Title="Location">
+
+    <Grid>
+        <!-- Main Content with ScrollView -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15" Margin="0, 0, 0, 70">
+                <!-- Region Picker -->
+                <Label Text="Select Region" FontAttributes="Bold" />
+                <Picker x:Name="RegionPicker" TextColor="Black" />
+
+                <!-- Province Picker -->
+                <Label Text="Select Province" FontAttributes="Bold" TextColor="Black" />
+                <Picker x:Name="ProvincePicker" IsEnabled="False" />
+
+                <!-- City Picker -->
+                <Label Text="Select City" FontAttributes="Bold" TextColor="Black" />
+                <Picker x:Name="CityPicker" IsEnabled="False" />
+
+                <!-- Barangay Picker -->
+                <Label Text="Select Barangay" FontAttributes="Bold" TextColor="Black" />
+                <Picker x:Name="BarangayPicker" IsEnabled="False" />
+
+                <!-- Home Address -->
+                <Label Text="Home Address" FontAttributes="Bold" TextColor="Black" />
+                <Entry x:Name="HomeAddressEntry" Placeholder="Enter Home Address" />
+
+                <!-- Zip Code -->
+                <Label Text="Zip Code" FontAttributes="Bold" TextColor="Black" />
+                <Entry x:Name="ZipCodeEntry" Placeholder="Enter Zip Code" Keyboard="Numeric" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Footer Button -->
+        <Grid VerticalOptions="End" Padding="20" BackgroundColor="White">
+            <Button Text="Save"
+                    Clicked="OnSaveClicked"
+                    BackgroundColor="#005acd"
+                    TextColor="White"
+                    CornerRadius="8"
+                    HeightRequest="50"
+                    FontAttributes="Bold" />
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay"
+                BackgroundColor="#80000000"
+                IsVisible="False"
+                Opacity="0"
+                InputTransparent="False">
+            <ActivityIndicator IsRunning="True"
+                               Color="White"
+                               WidthRequest="100"
+                               HeightRequest="100"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,70 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Concorde.EditProfilePage"
+             Shell.TabBarIsVisible="False"
+             Title="Edit Profile"
+             BackgroundColor="White">
+
+    <Grid RowDefinitions="*, Auto">
+        <!-- Main Content -->
+        <ScrollView Grid.Row="0" Padding="20">
+            <VerticalStackLayout Spacing="15">
+
+                <!-- Full Name -->
+                <Label Text="Full Name" FontSize="12" TextColor="Gray" HorizontalOptions="Start" />
+                <Entry x:Name="FullNameEntry" TextColor="Black" Placeholder="Full Name" />
+
+                <!-- Email -->
+                <Label Text="Email" FontSize="12" TextColor="Gray" HorizontalOptions="Start" />
+                <Entry x:Name="EmailEntry" TextColor="Black" Placeholder="Email" Keyboard="Email" />
+
+                <!-- Gender -->
+                <Label Text="Gender" FontSize="12" TextColor="Gray" HorizontalOptions="Start" />
+                <Picker x:Name="GenderPicker" TextColor="Black" Title="Select Gender">
+                    <Picker.Items>
+                        <x:String>Male</x:String>
+                        <x:String>Female</x:String>
+                        <x:String>Other</x:String>
+                    </Picker.Items>
+                </Picker>
+
+                <!-- Birthday -->
+                <Label Text="Birthday" FontSize="12" TextColor="Gray" HorizontalOptions="Start" />
+                <DatePicker x:Name="BirthdayPicker" TextColor="Black" />
+
+                <!-- Contact Number -->
+                <Label Text="Contact Number" FontSize="12" TextColor="Gray" HorizontalOptions="Start" />
+                <Entry x:Name="ContactEntry" TextColor="Black" Placeholder="Contact Number" Keyboard="Telephone" />
+
+                <!-- Change Password -->
+                <Label Text="New Password" FontSize="12" TextColor="Gray" HorizontalOptions="Start" />
+                <Entry x:Name="PasswordEntry" IsPassword="True" TextColor="Black" Placeholder="New Password" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Footer Button -->
+        <Grid Grid.Row="1" Padding="20" BackgroundColor="White">
+            <Button Text="Save Changes"
+                    Clicked="OnSaveChangesClicked"
+                    HeightRequest="50"
+                    BackgroundColor="#005acd"
+                    TextColor="White"
+                    CornerRadius="10" />
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay"
+              BackgroundColor="#80000000"
+              IsVisible="False"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand">
+
+            <ActivityIndicator IsRunning="True"
+                               Color="White"
+                               WidthRequest="50"
+                               HeightRequest="50"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

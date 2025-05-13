@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="Concorde.app">
+
+  <!-- Declare features outside <application> -->
+  <uses-feature android:name="android.software.webview" android:required="false" />
+
+  <application
+    android:allowBackup="true"
+    android:label="Concorde"
+    android:supportsRtl="true"
+    android:usesCleartextTraffic="true"
+    android:networkSecurityConfig="@xml/network_security_config"
+    android:icon="@mipmap/concorde"
+    android:roundIcon="@mipmap/concorde">
+    <!-- Change from ic_launcher to appicon -->
+
+    <!-- Use default MAUI icon names -->
+
+    <!-- Add these lines here -->
+
+    <!-- Allow HTTP connections -->
+    <uses-library android:name="org.apache.http.legacy" android:required="false" />
+  </application>
+
+  <!-- Internet and Network Permissions -->
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+</manifest>
